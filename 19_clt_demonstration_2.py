@@ -1,0 +1,91 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import scipy.stats as stats
+from matplotlib.backends.backend_pdf import PdfPages
+
+# Set random seed for reproducibility
+np.random.seed(42)
+
+# Generate non-normal distributions
+exponential_data = np.random.exponential(scale=1.0, size=10000)
+uniform_data = np.random.uniform(low=0, high=100, size=10000)
+
+# Function to draw samples and generate CLT visuals
+def clt_visuals(dist_name, data, sample_sizes=[10, 30, 100], num_samples=1000):
+    fig_list = []
+
+    for n in sample_sizes:
+        sample_means = [
+            np.mean(np.random.choice(data, size=n, replace=True))
+            for _ in range(num_samples)
+        ]
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+        # Histogram of sample means
+        sns.histplot(sample_means, bins=30, kde=True, ax=axes[0], color="skyblue")
+        axes[0].set_title(f'{dist_name} - Sample Means (n={n})')
+        axes[0].set_xlabel('Sample Mean')
+        axes[0].set_ylabel('Frequency')
+
+        # Q-Q plot
+        stats.probplot(sample_means, dist="norm", plot=axes[1])
+        axes[1].set_title(f'Q-Q Plot of Sample Means (n={n})')
+
+        fig.suptitle(f'Demonstrating CLT for {dist_name} Distribution (Sample Size = {n})', fontsize=14)
+        fig.tight_layout(rect=[0, 0, 1, 0.95])
+        fig_list.append(fig)
+
+    return fig_list
+
+# === 1. Visualize Raw Datasets ===
+
+# Histogram of Exponential and Uniform distributions
+fig_raw, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+sns.histplot(exponential_data, bins=30, kde=True, ax=axes[0], color='orange')
+axes[0].set_title("Raw Data: Exponential Distribution")
+axes[0].set_xlabel("Value")
+axes[0].set_ylabel("Frequency")
+
+sns.histplot(uniform_data, bins=30, kde=True, ax=axes[1], color='green')
+axes[1].set_title("Raw Data: Uniform Distribution")
+axes[1].set_xlabel("Value")
+axes[1].set_ylabel("Frequency")
+
+fig_raw.tight_layout()
+
+# === 2. Q-Q Plot: Exponential vs Uniform ===
+
+# Sort both datasets for Q-Q plot
+min_len = min(len(exponential_data), len(uniform_data))
+sorted_exp = np.sort(exponential_data[:min_len])
+sorted_uni = np.sort(uniform_data[:min_len])
+
+fig_qq = plt.figure(figsize=(6, 6))
+plt.plot(sorted_exp, sorted_uni, marker='o', linestyle='', markersize=2)
+plt.plot([sorted_exp.min(), sorted_exp.max()],
+         [sorted_exp.min(), sorted_exp.max()],
+         'r--', label='y = x')
+plt.xlabel('Quantiles of Exponential')
+plt.ylabel('Quantiles of Uniform')
+plt.title('Q-Q Plot: Exponential vs Uniform')
+plt.legend()
+plt.grid(True)
+
+# === 3. CLT Visuals for Both ===
+
+exp_figs = clt_visuals("Exponential", exponential_data)
+uni_figs = clt_visuals("Uniform", uniform_data)
+
+# === 4. Save all figures to PDF ===
+
+with PdfPages("CLT_Demonstration_2.pdf") as pdf:
+    pdf.savefig(fig_raw)
+    pdf.savefig(fig_qq)
+    for fig in exp_figs + uni_figs:
+        pdf.savefig(fig)
+        plt.close(fig)
+
+print("✅ PDF saved as 'CLT_Demonstration_2.pdf'")
