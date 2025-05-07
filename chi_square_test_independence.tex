@@ -1,0 +1,331 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}     % Encoding
+\usepackage{graphicx}           % For images
+\usepackage{amsmath, amssymb, amsfonts}   % Math symbols
+\usepackage{hyperref}           % Hyperlinks
+\usepackage{geometry}
+\geometry{margin=1in}
+
+%\begin{figure}
+%\includegraphics[scale=0.7]{srh_logo.png}
+%\end{figure}
+
+% Title
+\title{Chi-Square: Test for independence}
+\author{
+    Abhishek Negi \\ 
+    Student ID: 100004670 \\ 
+    \texttt{abhishek.negi53@gmail.com}\\[6pt]
+    \,
+    Aakash Vashist \\ 
+    Student ID: 100004661 \\ 
+    \texttt{aakashvashisht380@gmail.com}\\[6pt]
+    \,
+    Nagarjuna Yadav \\ 
+    Student ID: 100004206 \\ 
+    \texttt{bodanaboinanagarjunayadav@gmail.com}\\[6pt]
+    \,
+    MSc. Computer Science: Big data and AI\\
+    SRH University
+}
+\date{\today}
+
+
+\begin{document}
+
+\begin{figure}[H]
+\flushright
+\includegraphics[width=3cm]{university_logo.png} 
+\end{figure}
+
+\maketitle  % Generates title
+
+\newpage
+
+\tableofcontents  % Optional: generates TOC
+\newpage
+
+\section{Introduction}
+The Chi-Square Test of Independence is a statistical test used to determine whether there is a significant association between two categorical variables.\\[4pt]
+It tests the null hypothesis that the variables are independent — that is, the presence or level of one variable does not affect the other.
+
+\subsection{Background}
+The Chi-square test is a widely used non-parametric statistical test that was developed by Karl Pearson in 1900. It is used to assess whether observed data significantly differ from what would be expected under a specific hypothesis. Because it does not assume a normal distribution, it's especially useful for analyzing categorical data — data that can be divided into distinct groups or categories.
+
+\section{Methodology}
+
+\subsection{Purpose:}
+To test whether two categorical variables are independent (i.e., not related) or associated in some way.
+
+\subsection{Basic Idea:}
+It compares the observed frequencies (actual data) in a contingency table with the expected frequencies (what we would expect if the variables were independent). If there's a large enough difference, the variables are likely associated.
+
+\subsection{Key Terminology:}
+\begin{itemize}
+
+\item Observed frequency $(O)$: The actual count in each cell of the contingency table.
+\item Expected frequency $(E)$: The count you would expect if the variables were truly independent.
+\item Degrees of freedom $ \left(df\right): (rows-1) * (columns-1)$
+\item Chi-square statistic $(\chi^2): \sum \dfrac{(f_O - f_E)^2}{f_E}$\\[4pt]
+
+$f_O$: observed frequencies\\
+$f_E$: expected frequencies
+
+\end{itemize}
+
+\subsection{Steps to perform Chi-Square test for independence:}
+
+\subsubsection{State the hypothesis:}
+\begin{itemize}
+\item Null Hypothesis $(H_0)$: The two variables are independent (no association).
+
+\item Alternative Hypothesis $(H_A)$: The two variables are dependent (there is an association).
+\end{itemize}
+
+\subsubsection{Prepare contingency table:}
+Organize your data into a contingency table. The rows and columns represent the two categorical variables you're testing for independence. Each cell in the table will contain the observed frequencies.\\
+Example:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  & Category A & Category B & Category C \\
+  \hline
+  Group 1 & $O_1$ & $O_2$ &$O_3$ \\
+  Group 2 & $O_4$ & $O_5$ &$O_6$ \\
+  \hline
+ 
+\end{tabular}
+\caption{Contingency Table for Gender and Product Preference}
+\label{tab:chi2example}
+\end{table}
+
+\subsubsection{Calculate expected frequency:}
+For each cell in the table, calculate the expected frequency assuming the null hypothesis is true. The formula for expected frequency $E$.\\
+$E$ for each cell is:\\[4pt]
+
+\begin{equation}
+E = \dfrac{(\text {rows total})*(\text {column total})}{\text {grand total}}\\[4pt]
+\end{equation}
+
+Do this for every cell in your table.
+
+\subsubsection{Compute the Chi-Square statistics:}
+Use the following formula to compute the Chi-square statistic:
+
+\begin{equation}
+ \chi^2 = \sum \dfrac{(O - E)^2}{E} \\[4pt]
+\end{equation}
+
+Where:
+\begin{itemize}
+\item $O$ = Observed frequency
+\item $E$ = Expected frequency
+\end{itemize}
+Sum this calculation for all the cells in your contingency table.
+
+\subsubsection{Define degree of freedom $(df)$:}
+The degrees of freedom $(df)$ for a Chi-square test for independence is given by:
+
+\begin{equation}
+ df = (r-1)*(c-1)\\[4pt]
+\end{equation}
+
+Where:
+\begin{itemize}
+\item $r$ = number of rows
+\item $c$ = number of columns
+\end{itemize}
+
+\subsubsection{Find the p-value or  critical value:}
+\begin{itemize}
+\item Using the Chi-square distribution table, find the critical value of Chi-square at the desired significance level ($\alpha$, often 0.05) and degrees of freedom. The critical value corresponds to the threshold for rejecting the null hypothesis.
+
+\item Use a Chi-Square distribution table or software (like Excel, SPSS, or Python) to find the p-value corresponding to your $\chi^2$ value and degrees of freedom.
+\end{itemize}
+
+\subsubsection{Compare the statistic test with p-value or critical value:}
+\begin{itemize}
+\item If p-value $\leq\alpha$ (typically 0.05), reject $H_O$ → The variables are dependent.
+\item If p-value $> \alpha$, fail to reject $H_A$ → The variables are independent.\\[6pt]
+Or
+\item If the calculated Chi-square statistic is greater than the critical value from the Chi-square table, reject the null hypothesis ($H_O$).
+\item If the calculated Chi-square statistic is less than the critical value, fail to reject the null hypothesis.
+
+\end{itemize}
+
+\subsubsection{Conclusion:}
+Based on the comparison in the previous step:
+\begin{itemize}
+\item If you reject $H_O$, conclude that there is a significant association between the two variables.
+\item If you fail to reject $H_A$ , conclude that there is no significant association between the two variables.
+\end{itemize}
+
+
+\section{Example}
+In this example we will use hypothetical data to calculate and better understand the chi-square test for independence.
+
+\subsubsection*{Data:}
+Given below is an imaginary dataset which shows the product preferences (like or dislike) categorized based on gender (male or female):
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  & Like & Dislike & Total \\
+  \hline
+  Male   & 30   & 20   & 50 \\
+  Female & 40   & 10   & 50 \\
+  \hline
+  Total  & 70   & 30   & 100 \\
+  \hline
+\end{tabular}
+\caption{Data table for likes/dislikes with accordance to gender}
+\end{table}
+
+\subsection*{Step 1: Hypotheses}
+\begin{itemize}
+    \item Null Hypothesis ($H_0$): Gender and product preference are independent.
+    \item Alternative Hypothesis ($H_1$): Gender and product preference are not independent.
+\end{itemize}
+
+\subsection*{Step 2: Calculate Expected Frequencies}
+The expected frequency for each cell is calculated using the Eq.(1):\\[4pt]
+
+For example, expected value for Male–Like:
+
+\[
+E = \frac{50 \times 70}{100} = 35
+\]
+
+Expected values for each cell:
+\begin{itemize}
+    \item Male–Like: 35
+    \item Male–Dislike: 15
+    \item Female–Like: 35
+    \item Female–Dislike: 15
+\end{itemize}
+
+\subsection*{Step 3: Compute the Chi-Square Statistic}
+
+Using Eq.(2):
+
+\[
+\chi^2 = \frac{(30 - 35)^2}{35} + \frac{(20 - 15)^2}{15} + \frac{(40 - 35)^2}{35} + \frac{(10 - 15)^2}{15}
+\]
+
+\[
+\chi^2 = \frac{25}{35} + \frac{25}{15} + \frac{25}{35} + \frac{25}{15}
+\]
+
+\[
+\chi^2 \approx 0.714 + 1.667 + 0.714 + 1.667 = 4.762
+\]
+
+\subsection*{Step 4: Degrees of Freedom}
+Using Eq.(3):
+
+\[
+df = (r - 1)(c - 1) = (2 - 1)(2 - 1) = 1
+\]
+
+\subsection*{Step 5: Determine Critical Value}
+
+At $\alpha = 0.05$ and $df = 1$, the critical value from the Chi-square table is **3.841**.
+
+\subsection*{Step 6: Compare and Conclude}
+
+\[
+\chi^2 = 4.762 > 3.841 \Rightarrow \text{Reject } H_0
+\]
+
+\subsection*{Step 7: Conclusion} There is a statistically significant association between gender and product preference.
+
+\section{Limitations of the Chi-Square Test for Independence}
+
+\begin{itemize}
+    \item \textbf{Requires large sample size:} The test may give misleading results when sample sizes are too small, especially if expected frequencies in any cell are less than 5.
+    
+    \item \textbf{Only for categorical data:} It cannot be used for continuous variables without converting them into categories, which can lead to loss of information.
+    
+    \item \textbf{Sensitive to sample distribution:} Uneven distribution among categories can distort the Chi-square value.
+    
+    \item \textbf{Does not indicate strength or direction:} The test only shows whether a relationship exists, not how strong or meaningful it is.
+    
+    \item \textbf{Assumes independence of observations:} The data must consist of independent observations; repeated or related measures violate this assumption.
+    
+    \item \textbf{Affected by grouping:} The way data is grouped or categorized can influence the results of the test.
+    
+    \item \textbf{Cannot handle sparse tables:} If too many cells have zero or very low expected frequencies, the validity of the test is compromised.
+\end{itemize}
+
+\section{Alternative Test}
+
+\subsubsection{Fisher's Exact Test}
+\begin{itemize}
+\item When to use: For small sample size(especially when any expected frequency < 5).
+\item Why: It calculates the exact probability of observing the data, rather than relying on approximations.
+\item Example: Testing the association between treatment outcome (improved/not improved) and drug type in a small clinical trial.
+\end{itemize}
+
+\section{Result Interpretation}
+
+After performing the Chi-square test, the calculated Chi-square statistic is compared to the critical value from the Chi-square distribution table at the chosen significance level (usually $\alpha = 0.05$).
+
+\begin{itemize}
+    \item \textbf{If} $\chi^2_{\text{calculated}} > \chi^2_{\text{critical}}$:
+    \begin{itemize}
+        \item Reject the null hypothesis ($H_0$).
+    \end{itemize}
+    
+    \item \textbf{If} $\chi^2_{\text{calculated}} \leq \chi^2_{\text{critical}}$:
+    \begin{itemize}
+        \item Fail to reject the null hypothesis ($H_0$).
+    \end{itemize}
+\end{itemize}
+
+\section{General Conclusion Format}
+
+\begin{itemize}
+    \item \textbf{If the null hypothesis is rejected:} \\
+    There is a statistically significant association between the two categorical variables. This suggests that the variables are \textbf{not independent}.
+
+    \item \textbf{If the null hypothesis is not rejected:} \\
+    There is no statistically significant association between the two categorical variables. This suggests that the variables are \textbf{independent}.
+\end{itemize}
+
+
+% Bibliography
+\begin{thebibliography}{99}
+\bibitem{SAS Institute} SAS Institute Inc. (n.d.),
+\textit{Chi-square test of independence. JMP Statistical Discovery},
+\url https://www.jmp.com/en/statistics-knowledge-portal/chi-square-test/chi-square-test-of-independence
+
+\bibitem{Freie University} Freie Universität Berlin. (n.d.).),
+\textit{Chi-square independence test. In Statistics and Geospatial Data Analysis (SOGA).},
+\url https://www.geo.fu-berlin.de/en/v/soga-r/Basics-of-statistics/Hypothesis-Tests/Chi-Square-Tests/Chi-Square-Independence-Test/index.html
+
+\bibitem{Zolghadr} Zolghadr, Z. (n.d.).,
+\textit{The Chi-square test for independence [Code notebook]. Kaggle. },
+\url https://www.kaggle.com/code/zahrazolghadr/the-chi-square-test-for-independence
+
+\bibitem{Example} Example: OpenAI. (n.d.). ,
+\textit{ChatGPT.},
+\url https://chatgpt.com/
+
+\bibitem{Further example} For further example: Khan Academy. (2013, September 6).,
+\textit{Chi-square test of independence [Video]. YouTube. },
+\url {https://www.youtube.com/watch?v=zOvUQWOzTlc}
+
+\end{thebibliography}
+
+\section*{Appendix}
+\begin{itemize}
+\item Table 1. Contingency Table for Gender and Product Preference
+\item Table 2. Data table for likes/dislikes with accordance to gender
+\end{itemize}
+
+\end{document}
